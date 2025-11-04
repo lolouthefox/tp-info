@@ -1,3 +1,6 @@
+// L. CHENEVAL - Oct. 2025 - courses/main.cpp
+// Permet de gerer une liste de courses
+
 #include <iostream>
 #include <string>
 #include <stdlib.h>
@@ -14,19 +17,24 @@ const unsigned int MAX_CMD_SIZE = 10;
 Article articles[MAX_ARTICLES];
 unsigned int nb_articles = 0;
 
-
+// ---
+// Checks all items
 void check_all(Article list[]) {
 	for (unsigned int i = 0; i < nb_articles; i++) {
 		list[i].checked = true;
 	}
 }
 
+// ---
+// Unchecks all items
 void uncheck_all(Article list[]) {
 	for (unsigned int i = 0; i < nb_articles; i++) {
 		list[i].checked = false;
 	}
 }
 
+// ---
+// Shows the list using the special formatting
 void show_list(Article list[]) {
 	for (unsigned int i = 0; i < nb_articles; i++) {
 		Article item = list[i];
@@ -41,6 +49,8 @@ void show_list(Article list[]) {
 	}
 }
 
+// ---
+// Prompts the user to input the data
 string prompt_cmd() {
 	string prompt;
 	cout << "> ";
@@ -48,6 +58,9 @@ string prompt_cmd() {
 	return prompt;
 }
 
+// ---
+// Parse the prompt and executes the commands.
+// Returns true if program should be exited.
 bool handle_prompt(const string &prompt) {
 	string arguments[MAX_CMD_SIZE];
 	int nb_arguments = 0;
@@ -70,6 +83,7 @@ bool handle_prompt(const string &prompt) {
 		return true;
 	}
 
+	// Check an itemor all items
 	if (arguments[0] == "check") {
 		if (arguments[1] == "all") {
 			check_all(articles);
@@ -83,6 +97,7 @@ bool handle_prompt(const string &prompt) {
 		}
 	}
 
+	// Unchecks one or all items
 	if (arguments[0] == "uncheck") {
 		if (arguments[1] == "all") {
 			uncheck_all(articles);
@@ -96,6 +111,7 @@ bool handle_prompt(const string &prompt) {
 		}
 	}
 
+	// Add an item
 	if (arguments[0] == "add") {
 		string name;
 		for (int i = 1; i < nb_arguments; i++) {
@@ -109,6 +125,7 @@ bool handle_prompt(const string &prompt) {
 		nb_articles += 1;
 	}
 
+	// Remove an item
 	if (arguments[0] == "remove") {
 		int index = stoi(arguments[1]);
 		if (index >= 0 && index < nb_articles) {
@@ -121,6 +138,7 @@ bool handle_prompt(const string &prompt) {
 		}
 	}
 
+	// Rename an item
 	if (arguments[0] == "rename") {
 		const int index = stoi(arguments[1]);
 		if (index >= 0 && index < nb_articles) {
@@ -138,6 +156,7 @@ bool handle_prompt(const string &prompt) {
 		}
 	}
 
+	// Deletes all items
 	if (arguments[0] == "DELETEALL") {
 		nb_articles = 0;
 	}
@@ -145,12 +164,14 @@ bool handle_prompt(const string &prompt) {
 	return false;
 }
 
-
+// ---
+// Allows a user to manage a groceries list
 int main() {
 	nb_articles += 1;
-	articles[0] = { false, "Cheese" };
+	articles[0] = { false, "Jambon/Jamon/Ham/Wurst" };
 
 	while (true) {
+		// Show the list and prompt the user
 		show_list(articles);
 		string prompt = prompt_cmd();
 
@@ -160,6 +181,7 @@ int main() {
 			break;
 		}
 
+		// Clear the terminal and flush the iostream
 		system("clear");
 		cout << flush;
 	}
